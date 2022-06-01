@@ -1,3 +1,2 @@
-py-cord
 PyNaCl
-py-cord[voice]
+git+https://github.com/Pycord-Development/pycord
