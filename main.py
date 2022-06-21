@@ -10,24 +10,12 @@ discord.opus.load_opus(name=config.opus_path)
 
 
 @bot.command()
-@option(
-    "encoding",
-    choices=[
-        "mp3",
-        "wav",
-        "pcm",
-        "ogg",
-        "mka",
-        "mkv",
-        "mp4",
-        "m4a",
-    ],
-)
-async def start(ctx: ApplicationContext, encoding: str):
+async def start(ctx: ApplicationContext):
     """
     Record your voice!
     """
     await ctx.defer()
+    sink = discord.sinks.WaveSink()
 
     voice = ctx.author.voice
 
@@ -36,25 +24,6 @@ async def start(ctx: ApplicationContext, encoding: str):
 
     vc = await voice.channel.connect()
     bot.connections.update({ctx.guild.id: vc})
-
-    if encoding == "mp3":
-        sink = discord.sinks.MP3Sink()
-    elif encoding == "wav":
-        sink = discord.sinks.WaveSink()
-    elif encoding == "pcm":
-        sink = discord.sinks.PCMSink()
-    elif encoding == "ogg":
-        sink = discord.sinks.OGGSink()
-    elif encoding == "mka":
-        sink = discord.sinks.MKASink()
-    elif encoding == "mkv":
-        sink = discord.sinks.MKVSink()
-    elif encoding == "mp4":
-        sink = discord.sinks.MP4Sink()
-    elif encoding == "m4a":
-        sink = discord.sinks.M4ASink()
-    else:
-        return await ctx.respond("Invalid encoding.")
 
     vc.start_recording(
         sink,
