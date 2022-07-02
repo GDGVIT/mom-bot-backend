@@ -2,7 +2,6 @@ from firebase_admin import storage, initialize_app, credentials
 import hashlib
 import config
 import io
-# utility functions
 
 credential_object = credentials.Certificate('./credentials.json')
 initialize_app(credential=credential_object, options={'storageBucket': f'{config.bucket_name}.appspot.com'})
