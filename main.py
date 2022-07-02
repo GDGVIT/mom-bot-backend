@@ -1,8 +1,8 @@
-import os
+import utils
 
 import discord
 import config
-from discord.commands import ApplicationContext, option
+from discord.commands import ApplicationContext
 
 bot = discord.Bot(debug_guilds=config.guild_ids)
 bot.connections = {}
@@ -34,11 +34,18 @@ async def start(ctx: ApplicationContext):
     await ctx.respond("The recording has started!")
 
 
-async def finished_callback(sink, channel: discord.TextChannel, *args):
+async def finished_callback(sink: discord.sinks.WaveSink, channel: discord.TextChannel, *args):
     recorded_users = [f"<@{user_id}>" for user_id, audio in sink.audio_data.items()]
     await sink.vc.disconnect()
-    files = [discord.File(audio.file, f"{user_id}.{sink.encoding}") for user_id, audio in sink.audio_data.items()]
-    await channel.send(f"Finished! Recorded audio for {', '.join(recorded_users)}.", files=files)
+    file_link = None
+    for audio in sink.audio_data.items():
+        file_link = utils.upload_to_cloud(audio[1].file)
+    
+    if file_link:
+        await channel.send(f"Recording finished! Link: {file_link}")
+    else:
+        await channel.send("Error occured during recording.")
+
 
 
 @bot.command()
@@ -54,6 +61,10 @@ async def stop(ctx):
         await ctx.delete()
     else:
         await ctx.respond("Not recording in this guild.")
+
+@bot.event
+async def on_ready():
+    print(f"Logged in as {bot.user.name}#{bot.user.discriminator}")
 
 
 bot.run(config.bot_token)

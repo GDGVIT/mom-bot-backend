@@ -1,2 +1,3 @@
 PyNaCl
 git+https://github.com/Pycord-Development/pycord
+firebase_admin
