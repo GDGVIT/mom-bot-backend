@@ -8,9 +8,8 @@ bot = discord.Bot(debug_guilds=config.guild_ids)
 bot.connections = {}
 discord.opus.load_opus(name=config.opus_path)
 
-
 @bot.command()
-async def start(ctx: ApplicationContext):
+async def start(ctx: ApplicationContext) -> None:
     """
     Record your voice!
     """
@@ -34,7 +33,7 @@ async def start(ctx: ApplicationContext):
     await ctx.respond("The recording has started!")
 
 
-async def finished_callback(sink: discord.sinks.WaveSink, channel: discord.TextChannel, *args):
+async def finished_callback(sink: discord.sinks.WaveSink, channel: discord.TextChannel, *args) -> None:
     recorded_users = [f"<@{user_id}>" for user_id, audio in sink.audio_data.items()]
     await sink.vc.disconnect()
     file_link = None
@@ -49,7 +48,7 @@ async def finished_callback(sink: discord.sinks.WaveSink, channel: discord.TextC
 
 
 @bot.command()
-async def stop(ctx):
+async def stop(ctx: ApplicationContext) -> None:
     """
     Stop recording.
     """
