@@ -1,12 +1,13 @@
-import utils
-
 import discord
-import config
 from discord.commands import ApplicationContext
+
+import config
+import utils
 
 bot = discord.Bot(debug_guilds=config.guild_ids)
 bot.connections = {}
 discord.opus.load_opus(name=config.opus_path)
+
 
 @bot.command()
 async def start(ctx: ApplicationContext) -> None:
@@ -33,18 +34,21 @@ async def start(ctx: ApplicationContext) -> None:
     await ctx.respond("The recording has started!")
 
 
-async def finished_callback(sink: discord.sinks.WaveSink, channel: discord.TextChannel, *args) -> None:
-    recorded_users = [f"<@{user_id}>" for user_id, audio in sink.audio_data.items()]
+async def finished_callback(
+    sink: discord.sinks.WaveSink, channel: discord.TextChannel, *args
+) -> None:
+    """
+    Callback for finished audio recordings.
+    """
     await sink.vc.disconnect()
     file_link = None
     for audio in sink.audio_data.items():
         file_link = utils.upload_to_cloud(audio[1].file)
-    
+
     if file_link:
         await channel.send(f"Recording finished! Link: {file_link}")
     else:
         await channel.send("Error occured during recording.")
-
 
 
 @bot.command()
@@ -61,8 +65,12 @@ async def stop(ctx: ApplicationContext) -> None:
     else:
         await ctx.respond("Not recording in this guild.")
 
+
 @bot.event
-async def on_ready():
+async def on_ready() -> None:
+    """
+    Called when the bot is logged in and is ready to process commands.
+    """
     print(f"Logged in as {bot.user.name}#{bot.user.discriminator}")
 
 

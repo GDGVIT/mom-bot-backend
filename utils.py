@@ -1,10 +1,15 @@
-from firebase_admin import storage, initialize_app, credentials
 import hashlib
-import config
 import io
 
-credential_object = credentials.Certificate('./credentials.json')
-initialize_app(credential=credential_object, options={'storageBucket': f'{config.bucket_name}.appspot.com'})
+from firebase_admin import credentials, initialize_app, storage
+
+import config
+
+credential_object = credentials.Certificate("./credentials.json")
+initialize_app(
+    credential=credential_object,
+    options={"storageBucket": f"{config.bucket_name}.appspot.com"},
+)
 
 
 def upload_to_cloud(file: io.BytesIO) -> str:
@@ -19,6 +24,6 @@ def upload_to_cloud(file: io.BytesIO) -> str:
     except:
         print("Error occured while uploading file to cloud.")
         return
-    
+
     audioFile.make_public()
     return audioFile.media_link
