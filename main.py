@@ -1,13 +1,11 @@
-import discord
-from discord.commands import ApplicationContext
-
 import config
+import discord
 import utils
+from discord.commands import ApplicationContext
 
 bot = discord.Bot(debug_guilds=config.guild_ids)
 bot.connections = {}
 discord.opus.load_opus(name=config.opus_path)
-
 
 @bot.command()
 async def start(ctx: ApplicationContext) -> None:
