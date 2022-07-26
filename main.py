@@ -7,6 +7,7 @@ bot = discord.Bot(debug_guilds=config.guild_ids)
 bot.connections = {}
 discord.opus.load_opus(name=config.opus_path)
 
+
 @bot.command()
 async def start(ctx: ApplicationContext) -> None:
     """

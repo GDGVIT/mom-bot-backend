@@ -10,6 +10,7 @@ initialize_app(
     options={"storageBucket": f"{config.bucket_name}.appspot.com"},
 )
 
+
 def upload_to_cloud(file: io.BytesIO) -> str:
     """
     Handler to upload files to cloud storage.
