@@ -23,7 +23,7 @@ def upload_to_cloud(file: io.BytesIO) -> str:
         audioFile.upload_from_file(file)
     except:
         print("Error occured while uploading file to cloud.")
-        return
+        return ""
 
     audioFile.make_public()
     return audioFile.media_link
