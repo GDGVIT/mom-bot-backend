@@ -15,6 +15,7 @@ class VoiceData:
         if not member.id in self.current_speakers.keys():
             self.current_speakers[member.id] = time.time()
         if not member.id in self.speaker_info.keys():
+            # maintains a record of speakers' individual times in their own tracks
             self.speaker_info[member.id] = {"start_time": time.time(), "duration": 0}
 
     def remove_speaker(self, member: discord.Member) -> None:
