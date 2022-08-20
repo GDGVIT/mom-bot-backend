@@ -15,7 +15,6 @@ class VoiceData:
         if not member.id in self.current_speakers.keys():
             self.current_speakers[member.id] = time.time()
         if not member.id in self.speaker_info.keys():
-            # maintains a record of speakers' individual times in their own tracks
             self.speaker_info[member.id] = {"start_time": time.time(), "duration": 0}
 
     def remove_speaker(self, member: discord.Member) -> None:
@@ -23,6 +22,10 @@ class VoiceData:
             # calculating the start and end times in the entire meeting.
             start_time = self.current_speakers.pop(member.id) - self.meeting_start_time
             end_time = time.time() - self.meeting_start_time
+
+            if (end_time - start_time) < 1:
+                # ignoring cases where user unmutes and mutes for a very short duration
+                return None
 
             # calculate the start and end times in the individual audio record.
             start_time_local = self.speaker_info[member.id]["duration"]
