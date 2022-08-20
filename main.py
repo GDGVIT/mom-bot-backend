@@ -1,18 +1,18 @@
-from os import system
 import sys
 import time
-
-import discord
-from discord.commands import ApplicationContext
+from os import system
 
 import config
+import discord
+import utils
+from discord.commands import ApplicationContext
 from summary import summarize
 from voice_data import VoiceData
-import utils
 
 bot = discord.Bot(debug_guilds=config.guild_ids)
 bot.connections = {}
 voice_data = VoiceData()
+
 
 @bot.command()
 async def start(ctx: ApplicationContext) -> None:
@@ -27,7 +27,8 @@ async def start(ctx: ApplicationContext) -> None:
     voice = ctx.author.voice
 
     if not voice:
-        return await ctx.respond("You're not in a Voice Channel right now")
+        await ctx.respond("You're not in a Voice Channel right now")
+        return None
 
     vc = await voice.channel.connect()
     bot.connections.update({ctx.guild.id: vc})

@@ -1,13 +1,11 @@
 import hashlib
-import io
-import speech_recognition as sr
 from os import system
-import discord
-import config
 
 import config
-from google.cloud.storage.bucket import Blob
+import discord
+import speech_recognition as sr
 from firebase_admin import credentials, initialize_app, storage
+from google.cloud.storage.bucket import Blob
 
 credential_object = credentials.Certificate("./credentials.json")
 initialize_app(
@@ -40,7 +38,7 @@ def save_all_audio(sink: discord.sinks.WaveSink) -> None:
         with open(f"{user}.wav", "wb") as file:
             file.write(sink.audio_data[user].file.getvalue())
 
-        # Resample to 1 channel, 16kHz sample rate and dither to 16 bit depth 
+        # Resample to 1 channel, 16kHz sample rate and dither to 16 bit depth
         # for compatibility with voice API
         system(
             f"sox --ignore-length {user}.wav -c 1 -r 16000 -b 16 {user}_processed.wav"
@@ -63,6 +61,7 @@ def get_transcription(file: str, start_time: float, duration: float) -> str:
             )
         except sr.UnknownValueError:
             return "?"
+
 
 def cleanup_tmp() -> None:
     # cleans up all temporary files created during transcription
