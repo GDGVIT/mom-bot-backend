@@ -33,8 +33,10 @@ def upload_recording_to_cloud() -> Blob:
 
 
 def save_all_audio(sink: discord.sinks.WaveSink) -> None:
+    """
+    Save all audio tracks to disk
+    """
     for user in sink.audio_data.keys():
-        # writes each file to disk
         with open(f"{user}.wav", "wb") as file:
             file.write(sink.audio_data[user].file.getvalue())
 
@@ -47,7 +49,9 @@ def save_all_audio(sink: discord.sinks.WaveSink) -> None:
 
 
 def get_transcription(file: str, start_time: float, duration: float) -> str:
-    # returns the transcript for a particular time
+    """
+    Returns the transcript for a particular duration from a track
+    """
     r = sr.Recognizer()
     system("rm -rf tmp.wav")
     system(f"sox {file} tmp.wav trim {start_time} {duration}")
@@ -64,7 +68,9 @@ def get_transcription(file: str, start_time: float, duration: float) -> str:
 
 
 def cleanup_tmp() -> None:
-    # cleans up all temporary files created during transcription
+    """
+    Cleans up all temporary files created during the transcription process.
+    """
     system("rm -rf tmp.wav")
     system("rm -rf *_processed.wav")
     system("rm -rf transcript.txt")

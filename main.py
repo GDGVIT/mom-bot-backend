@@ -62,9 +62,7 @@ async def finished_callback(
 
     message = await channel.send("Transcribing audio :)")
     for timestamp in voice_data.timestamps:
-        """
-        Processing the audio and transcribing it.
-        """
+        # process the audio clip-by-clip
         user = await bot.get_or_fetch_user(timestamp["id"])
         async with channel.typing():
             transcript = utils.get_transcription(
@@ -116,6 +114,7 @@ async def stop(ctx: ApplicationContext) -> None:
     await ctx.defer()
     if ctx.guild.id in bot.connections:
         vc = bot.connections[ctx.guild.id]
+        # automatically end recording for remaining members in VC
         for member in vc.channel.members:
             voice_data.remove_speaker(member)
         vc.stop_recording()
@@ -148,6 +147,7 @@ async def on_voice_state_update(
             voice_data.add_speaker(member)
 
         if after.self_mute or after.mute:
+            # speaker has stopped speaking
             voice_data.remove_speaker(member)
 
 
