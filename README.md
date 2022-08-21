@@ -2,8 +2,8 @@
 <a href="https://dscvit.com">
 	<img width="400" src="https://user-images.githubusercontent.com/56252312/159312411-58410727-3933-4224-b43e-4e9b627838a3.png#gh-light-mode-only" alt="GDSC VIT"/>
 </a>
-	<h2 align="center"> < Insert Project Title Here > </h2>
-	<h4 align="center"> < Insert Project Description Here > <h4>
+	<h2 align="center"> MOM-Bot-backend </h2>
+	<h4 align="center"> A Discord bot to record, transcribe, and summarise your meetings. <h4>
 </p>
 
 ---
@@ -15,30 +15,38 @@
 
 
 ## Features
-- [ ]  < feature >
-- [ ]  < feature >
-- [ ]  < feature >
-- [ ]  < feature >
+- [x]  Record audio from a voice channel
+- [x]  Transcribe recorded audio
+- [x]  Prepare a summary from the transcribed audio
 
 <br>
 
 ## Dependencies
- - < dependency >
- - < dependency >
+ - pycord
+ - PyNaCl
+ - firebase_admin
+ - simplet5
+ - SpeechRecognition
 
 
 ## Running
 
-
-< directions to install > 
+Install `python`, `pip`, `sox`, and, `libopus`, and make sure they are in `PATH`. Then install pip dependencies from requirements.txt (using a virtual environment is strongly advised)
 ```bash
-< insert code >
+sudo apt install sox opus-tools python3 python3-venv python3-pip
+python3 -m pip install -r requirements.txt
 ```
+After this, download the model, and drop it into the `assets` folder on the root repository.
 
-< directions to execute >
-
+Run:
 ```bash
-< insert code >
+cp config.example.py config.py
+```
+and fill in the required information. Get your Service account credentials.json file and drop it in the root folder of the repository
+
+To run the bot, type:
+```bash
+python3 main.py
 ```
 
 ## Contributors
